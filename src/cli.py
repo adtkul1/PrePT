@@ -12,6 +12,7 @@ from src.content_generator import ContentGenerator
 from src.template_manager import TemplateManager
 from src.presentation_builder import PresentationBuilder
 from src.orchestrator import PresentationOrchestrator, ContentMapper
+from src.branded_template import BrandedTemplateHandler
 
 # Setup logging
 logging.basicConfig(
@@ -100,12 +101,23 @@ def generate(topic, slides, template, audience, tone, output):
             template_mgr.get_template_constraints(template)
         )
         
+        # Try to load branded template
+        branded_handler = None
+        branded_template_path = PROJECT_ROOT / "templates" / "accenture_template.pptx"
+        if branded_template_path.exists():
+            try:
+                click.echo("📐 Using branded Accenture template...")
+                branded_handler = BrandedTemplateHandler(branded_template_path)
+            except Exception as e:
+                logger.warning(f"Could not load branded template: {e}")
+        
         # Create orchestrator
         orchestrator = PresentationOrchestrator(
             content_generator=content_gen,
             template_manager=template_mgr,
             presentation_builder=PresentationBuilder,
-            content_mapper=content_map
+            content_mapper=content_map,
+            branded_template_handler=branded_handler
         )
         
         # Generate presentation
@@ -114,7 +126,8 @@ def generate(topic, slides, template, audience, tone, output):
             num_slides=slides,
             template_name=template,
             audience=audience,
-            tone=tone
+            tone=tone,
+            use_branded_template=branded_handler is not None
         )
         
         click.echo(

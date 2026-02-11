@@ -145,12 +145,14 @@ class PresentationOrchestrator:
         content_generator,
         template_manager,
         presentation_builder,
-        content_mapper
+        content_mapper,
+        branded_template_handler=None
     ):
         self.content_generator = content_generator
         self.template_manager = template_manager
         self.presentation_builder_class = presentation_builder
         self.content_mapper = content_mapper
+        self.branded_template_handler = branded_template_handler
     
     def generate(
         self,
@@ -158,7 +160,8 @@ class PresentationOrchestrator:
         num_slides: int,
         template_name: str = "corporate",
         audience: Optional[str] = None,
-        tone: str = "professional"
+        tone: str = "professional",
+        use_branded_template: bool = True
     ) -> str:
         """
         Generate complete presentation
@@ -169,6 +172,7 @@ class PresentationOrchestrator:
             template_name: Template to use
             audience: Target audience
             tone: Tone of presentation
+            use_branded_template: Use branded Accenture template if available
         
         Returns:
             Path to generated PPTX file
@@ -203,17 +207,34 @@ class PresentationOrchestrator:
         if not self.content_mapper.validate_presentation(outline):
             logger.warning("Presentation validation issues detected")
         
-        # Build PPTX
-        logger.info("Building presentation...")
-        builder = self.presentation_builder_class(template_config)
-        prs = builder.build_from_outline(outline)
+        # Build PPTX using branded template if available
+        if use_branded_template and self.branded_template_handler:
+            logger.info("Building presentation with branded template...")
+            from src.branded_template import TemplateContentInjector
+            
+            try:
+                prs = self.branded_template_handler.create_presentation_from_template()
+                injector = TemplateContentInjector(self.branded_template_handler)
+                prs = injector.inject_content(prs, outline.slides)
+            except Exception as e:
+                logger.warning(f"Failed to use branded template: {e}")
+                logger.info("Falling back to generic builder")
+                builder = self.presentation_builder_class(template_config)
+                prs = builder.build_from_outline(outline)
+        else:
+            logger.info("Building presentation with generic template...")
+            builder = self.presentation_builder_class(template_config)
+            prs = builder.build_from_outline(outline)
         
         # Save presentation
         output_path = self.template_manager.templates_dir.parent / "output" / \
                       f"{topic.replace(' ', '_')[:30]}.pptx"
         output_path.parent.mkdir(exist_ok=True)
         
-        result = builder.save(output_path)
-        logger.info(f"Presentation generated successfully: {result}")
-        
-        return result
+        try:
+            prs.save(str(output_path))
+            logger.info(f"Presentation generated successfully: {output_path}")
+            return str(output_path)
+        except Exception as e:
+            logger.error(f"Failed to save presentation: {e}")
+            raise
