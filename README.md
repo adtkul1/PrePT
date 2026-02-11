@@ -10,12 +10,21 @@ Automatically generate professional branded presentations using GenAI. Simply pr
 - Intelligent content structuring
 
 📐 **Branded Template System**: Professional template framework
+- **Accenture branded template** (TEMPLATE 2026.pptx) integration
+- Master slide preservation and theme consistency
 - Color schemes and typography management
-- Multiple slide layouts (title, content, closing)
+- Multiple slide layouts with automatic placeholder mapping
 - Layout constraint enforcement
+
+🖼️ **Brand Assets Integration**: Connect to your brand library
+- SharePoint image support for brand assets
+- Local caching of downloaded images
+- Automatic image injection into template placeholders
+- Support for logos, headers, and design elements
 
 🔧 **Smart Content Mapping**: Ensures generated content fits template perfectly
 - Automatic text validation and truncation
+- Template placeholder detection and mapping
 - Layout-aware content adaptation
 - Prevents design breakage
 
@@ -58,6 +67,14 @@ pip install -r requirements.txt
      ```
 
 ### Basic Usage
+
+**🎯 With Branded Accenture Template (Automatic)**:
+
+The system automatically detects and uses your branded Accenture template. Simply generate:
+
+```bash
+python main.py generate --topic "Digital Transformation Strategy" --slides 8
+```
 
 **Generate a presentation**:
 ```bash
@@ -199,6 +216,9 @@ docgen/
 │
 ├── DESIGN_OVERVIEW.md        # Design documentation
 ├── README.md                 # This file
+├── SETUP.md                  # Setup instructions
+├── EXAMPLES.md               # Usage examples
+├── BRANDED_ASSETS.md         # Brand integration guide
 │
 ├── src/                      # Source code
 │   ├── __init__.py
@@ -208,16 +228,15 @@ docgen/
 │   ├── content_generator.py  # GenAI integration
 │   ├── template_manager.py   # Template system
 │   ├── presentation_builder.py # PPTX generation
-│   └── orchestrator.py       # Pipeline orchestration
+│   ├── orchestrator.py       # Pipeline orchestration
+│   └── branded_template.py   # Branded template handling
 │
 ├── templates/
-│   └── corporate/            # Corporate template
-│       ├── config.yaml       # Theme config
-│       ├── theme/
-│       │   ├── colors.json   # Color definitions
-│       │   ├── fonts.json    # Font specifications
-│       │   └── assets/       # Images, logos, etc.
-│       └── slide_layouts/    # Layout specifications
+│   ├── accenture_template.pptx  # Branded Accenture template
+│   ├── brand_images/            # Brand assets (local cache)
+│   └── corporate/               # Fallback template
+│       ├── config.yaml
+│       └── theme/
 │
 ├── tests/                    # Unit tests (placeholder)
 │
