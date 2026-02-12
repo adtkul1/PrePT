@@ -5,14 +5,14 @@ Command-line interface for DocGen
 import click
 import logging
 from pathlib import Path
-from src.config import (
+from config import (
     PROJECT_ROOT, DEFAULT_SLIDES, DEFAULT_TEMPLATE, DEFAULT_TONE
 )
-from src.content_generator import ContentGenerator
-from src.template_manager import TemplateManager
-from src.presentation_builder import PresentationBuilder
-from src.orchestrator import PresentationOrchestrator, ContentMapper
-from src.branded_template import BrandedTemplateHandler
+from content_generator import ContentGenerator
+from template_manager import TemplateManager
+from presentation_builder import PresentationBuilder
+from orchestrator import PresentationOrchestrator, ContentMapper
+from branded_template import BrandedTemplateHandler
 
 # Setup logging
 logging.basicConfig(
