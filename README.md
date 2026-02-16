@@ -1,6 +1,6 @@
-# DocGen – GenAI‑Powered Branded Presentation Generator
+# PrePT – GenAI‑Powered Branded Presentation Generator
 
-DocGen is a proof‑of‑concept system that automatically generates **branded PowerPoint presentations** using GenAI.
+PrePT (DocGen as challenge suggested) is a proof‑of‑concept system that automatically generates **branded PowerPoint presentations** using GenAI.
 
 A user provides a topic (and optional parameters), DocGen generates structured slide content using an LLM, and safely injects that content into a **provided branded PPTX template** without breaking layouts, colors, or styles.
 
