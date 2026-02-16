@@ -1,6 +1,3 @@
-"""
-Configuration management for DocGen
-"""
 import os
 from pathlib import Path
 from typing import Optional, Dict, Any
@@ -20,6 +17,7 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # OpenAI Configuration
 # NOTE: Do NOT raise on import. Unit tests expect config to load with no API key.
 OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
+API_KEY: Optional[str] = os.getenv("GROQ_API_KEY")  
 
 MODEL = os.getenv("MODEL", "gpt-3.5-turbo")
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))
@@ -35,7 +33,7 @@ SLIDE_CONSTRAINTS = {
     "title_max_length": 80,
     "subtitle_max_length": 100,
     "bullet_max_length": 120,
-    "bullets_per_slide": (3, 5),
+    "bullets_per_slide": (3, 10),
     "min_chars_per_bullet": 20,
 }
 

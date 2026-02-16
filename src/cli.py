@@ -5,14 +5,13 @@ Command-line interface for DocGen
 import click
 import logging
 from pathlib import Path
-from config import (
-    PROJECT_ROOT, DEFAULT_SLIDES, DEFAULT_TEMPLATE, DEFAULT_TONE
+from .config import (PROJECT_ROOT, DEFAULT_SLIDES, DEFAULT_TEMPLATE, DEFAULT_TONE
 )
-from content_generator import ContentGenerator
-from template_manager import TemplateManager
-from presentation_builder import PresentationBuilder
-from orchestrator import PresentationOrchestrator, ContentMapper
-from branded_template import BrandedTemplateHandler
+from .content_generator import ContentGenerator
+from .template_manager import TemplateManager
+from .presentation_builder import PresentationBuilder
+from .orchestrator import PresentationOrchestrator, ContentMapper
+from .branded_template import BrandedTemplateHandler
 
 # Setup logging
 logging.basicConfig(
@@ -24,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 @click.group()
 def cli():
-    """DocGen: AI-Powered Presentation Generator"""
+    """PrePT: AI-Powered Presentation Generator"""
     pass
 
 
